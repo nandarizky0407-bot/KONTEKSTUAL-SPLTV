@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategi SPLTV - Laptop 14 Inci (15 Soal)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --lime: #deff9a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --correct: #059669;
+            --wrong: #dc2626;
+            --accent: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #020617;
+            font-family: 'Urbanist', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .page-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .presentation-container {
+            width: 95vw;
+            max-width: 1020px; 
+            aspect-ratio: 16 / 9;
+            background-color: var(--bg-dark);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            transform: scale(0.92);
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: calc(100% - 55px);
+            padding: 20px 35px;
+            flex-direction: column;
+            overflow-y: auto; 
+        }
+
+        .slide.active { display: flex; }
+
+        h1 { font-size: 46px; line-height: 1.1; margin-bottom: 8px; }
+        h1 span { color: var(--lime); }
+        .slide-title { font-size: 25px; font-weight: 700; border-left: 5px solid var(--lime); padding-left: 12px; margin-bottom: 12px; }
+        p { font-size: 14px; line-height: 1.4; color: var(--text-muted); }
+
+        .grid-2 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; flex-grow: 1; min-height: 0; }
+        .card { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); }
+
+        .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .input-row label { font-size: 13px; font-weight: 600; min-width: 55px; }
+        
+        .input-field {
+            background: #0f172a; border: 1px solid #475569; border-radius: 5px; color: #fff;
+            padding: 5px 8px; width: 90px; font-family: 'JetBrains Mono', monospace; font-size: 14px; text-align: center;
+            outline: none; transition: border-color 0.2s;
+        }
+        .input-field:focus { border-color: var(--lime); }
+        .input-field.is-correct { background: #064e3b !important; border-color: #10b981 !important; }
+        .input-field.is-wrong { background: #7f1d1d !important; border-color: #ef4444 !important; }
+
+        .btn-check {
+            background: var(--lime); color: #000; border: none; border-radius: 5px;
+            padding: 5px 10px; cursor: pointer; font-weight: 700; font-size: 12px;
+        }
+        .btn-check:hover { opacity: 0.9; }
+
+        .timer-badge {
+            background: #000; border: 1px solid var(--lime); padding: 3px 10px; border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px;
+        }
+        .timer-clock { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: var(--lime); min-width: 60px; }
+        
+        .solution-box {
+            display: none; background: #fef3c7; color: #92400e; padding: 8px;
+            border-radius: 6px; font-size: 12px; margin-top: 6px; border-left: 4px solid #f59e0b;
+            max-height: 75px; overflow-y: auto;
+        }
+
+        .nav-footer {
+            height: 55px; background: #090d16; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 25px;
+            margin-top: auto;
+        }
+        .nav-btn {
+            background: #1e293b; color: white; border: none; padding: 6px 14px; border-radius: 6px;
+            cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #334155; color: var(--lime); }
+        .nav-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+        .dots { display: flex; gap: 3px; }
+        .dot { width: 5px; height: 5px; background: #334155; border-radius: 50%; }
+        .dot.active { background: var(--lime); transform: scale(1.3); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th, td { text-align: left; padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: var(--lime); }
+
+        .slide-cover-layout { justify-content: center; align-items: center; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <div class="presentation-container">
+            
+            <div class="slide slide-cover-layout active" id="slide-1">
+                <h3 style="color: var(--accent); letter-spacing: 2px; margin-bottom: 8px; font-size: 14px;">MATEMATIKA SMA / FASE E</h3>
+                <h1>Soal Cerita <span>SPLTV</span></h1>
+                <p style="font-size: 16px;">Pemodelan Kontekstual & Penyelesaian Interaktif Berbasis Data</p>
+                <div style="margin-top: 20px;"><i class="fa-solid fa-calculator" style="font-size: 45px; color: var(--lime);"></i></div>
+            </div>
+
+            <div class="slide" id="slide-2">
+                <h2 class="slide-title">Toolkit Metode Penyelesaian SPLTV</h2>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 5px;">
+                    <div class="card">
+                        <i class="fa-solid fa-filter" style="color: var(--lime); font-size: 20px; margin-bottom: 6px;"></i>
+                        <h3 style="margin-bottom: 4px; font-size: 15px;">Metode Eliminasi</h3>
+                        <p style="font-size: 12px;">Menghilangkan variabel tertentu dengan menyamakan koefisien komponen aljabar.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-arrow-right-arrow-left" style="color: var(--lime); font-size: 20px; margin-bottom: 6px;"></i>
+                        <h3 style="margin-bottom: 4px; font-size: 15px;">Metode Substitusi</h3>
+                        <p style="font-size: 12px;">Memasukkan model atau nilai representasi satu variabel ke dalam persamaan lainnya.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-vials" style="color: var(--lime); font-size: 20px; margin-bottom: 6px;"></i>
+                        <h3 style="margin-bottom: 4px; font-size: 15px;">Metode Campuran</h3>
+                        <p style="font-size: 12px;">Strategi paling disukai: Melakukan eliminasi di awal, dilanjutkan langkah substitusi.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; padding: 10px; background: rgba(222,255,154,0.05); border-radius: 8px; font-style: italic; font-size: 13px;">
+                    <strong>Catatan Penting:</strong> Setiap pengerjaan soal <b>tidak harus selalu</b> menggabungkan eliminasi dan substitusi. Pilih rute pengerjaan paling sederhana. Jika ada variabel yang sudah berkoefisien 1, metode substitusi murni bisa jadi jauh lebih cepat!
+                </p>
+            </div>
+
+            <div class="slide" id="slide-3">
+                <h2 class="slide-title">Tujuan Pembelajaran Hari Ini</h2>
+                <div class="card" style="width: 80%; margin: auto; display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <i class="fa-solid fa-check-circle" style="color: var(--lime); font-size: 18px; margin-top: 2px;"></i>
+                        <p style="font-size: 15px; color: #fff;">Siswa dapat mengidentifikasi masalah kontekstual dan mengubahnya menjadi model sistem persamaan linear tiga variabel.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <i class="fa-solid fa-check-circle" style="color: var(--lime); font-size: 18px; margin-top: 2px;"></i>
+                        <p style="font-size: 15px; color: #fff;">Siswa mampu <strong>menyelesaikan variasi bentuk soal cerita SPLTV</strong> dengan taktis menggunakan metode yang paling efektif.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dynamic-content" style="display: contents;"></div>
+
+            <div class="slide" id="slide-19">
+                <h2 class="slide-title">Data Kecepatan & Analisis Siswa</h2>
+                <div class="grid-2">
+                    <div style="overflow-y: auto; max-height: 220px; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px;">
+                        <table>
+                            <thead>
+                                <tr><th>Tantangan</th><th>Waktu Pengerjaan</th><th>Status Kelulusan</th></tr>
+                            </thead>
+                            <tbody id="stat-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                        <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 12px;">Rata-Rata Waktu Pengerjaan</p>
+                        <h2 id="avg-display" style="font-size: 38px; color: var(--lime); margin: 5px 0;">--s</h2>
+                        <p style="font-size: 12px;">Waktu rata-rata mengukur tingkat efisiensi dan kematangan aljabar Anda.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-20">
+                <h2 class="slide-title">Kesimpulan & Ruang Refleksi</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3 style="font-size: 15px; color: var(--lime); margin-bottom: 6px;"><i class="fa-solid fa-key"></i> Intisari Utama</h3>
+                        <p>Ketelitian dalam menerjemahkan kalimat cerita ke bentuk simbol variabel $(x, y, z)$ memegang peran 90% keberhasilan. Satu kesalahan tanda (+) atau (-) di baris model awal akan menggagalkan hasil akhir.</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 15px; color: var(--lime); margin-bottom: 6px;"><i class="fa-solid fa-comments"></i> Evaluasi Diri</h3>
+                        <p>Dari seluruh variasi tantangan tadi, tipe soal cerita manakah yang paling menyita waktu pengerjaan Anda? Apakah fase eliminasi variabel atau fase substitusi pecahan yang terasa lambat?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide slide-cover-layout" id="slide-21">
+                <h1 style="font-size: 52px;">Terima <span>Kasih!</span></h1>
+                <p style="font-size: 15px;">Sesi Pembelajaran SPLTV Selesai. Tetap Semangat Mengasah Logika!</p>
+                <div style="margin-top: 20px; opacity: 0.2;"><i class="fa-solid fa-graduation-cap" style="font-size: 70px;"></i></div>
+            </div>
+
+            <div class="nav-footer">
+                <button class="nav-btn" id="btn-prev" onclick="moveSlide(-1)" disabled>KEMBALI</button>
+                <div class="dots" id="dots-container"></div>
+                <button class="nav-btn" id="btn-next" onclick="moveSlide(1)">LANJUT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Bank Soal Lengkap 15 Variasi Cerita SPLTV (Termasuk 5 Soal HOTS Baru)
+        const problems = [
+            { id: 1, title: "Alat Tulis", q: "Kia membeli 2 buku (x), 2 pulpen (y), 1 penggaris (z) = Rp5.200. Dina membeli 2 buku, 3 pulpen, 2 penggaris = Rp6.450. Dika membeli 3 buku, 2 pulpen, 1 penggaris = Rp6.800.", vars: {x: 1600, y: 750, z: 500}, finalQ: "Berapakah total harga jika membeli 1 buku, 1 pulpen, dan 1 penggaris sekaligus?", ans: 2850, sol: "x=1600, y=750, z=500. Hasil x+y+z = Rp2.850." },
+            { id: 2, title: "Usia Keluarga", q: "Umur Ayah (x) saat ini 28 tahun lebih tua dari Amira (z). Ibu (y) berumur 6 tahun lebih muda dari Ayah. Akumulasi umur ketiganya adalah 119 tahun.", vars: {x: 51, y: 45, z: 23}, finalQ: "Berapakah jumlah total umur dari Ibu dan Amira?", ans: 68, sol: "Ayah(x)=51, Ibu(y)=45, Amira(z)=23. Umur Ibu + Amira = 68 tahun." },
+            { id: 3, title: "Toko Buah", q: "Harga 1kg Jeruk (x), 3kg Salak (y), dan 2kg Apel (z) = Rp33.000. Harga 2kg Jeruk, 1kg Salak, dan 1kg Apel = Rp23.500. Harga 1kg Jeruk, 2kg Salak, dan 3kg Apel = Rp36.500.", vars: {x: 6000, y: 4000, z: 7500}, finalQ: "Berapakah harga murni untuk pembelian 1kg Salak?", ans: 4000, sol: "Dari perhitungan didapatkan nilai y = Rp4.000." },
+            { id: 4, title: "Misteri Bilangan", q: "Sebuah bilangan tiga digit (xyz) memiliki jumlah angka 16. Nilai ratusan ditambah puluhan sama dengan satuan dikurangi 2. Nilai bilangan itu sama dengan 21 kali jumlah angkanya ditambah 13.", vars: {x: 3, y: 4, z: 9}, finalQ: "Tentukan susunan angka bilangan tiga digit tersebut!", ans: 349, sol: "Ratusan(x)=3, Puluhan(y)=4, Satuan(z)=9. Gabungan bilangannya adalah 349." },
+            { id: 5, title: "Mesin Pabrik", q: "Tiga mesin (A, B, C) bekerja bersama memproduksi 200 unit per hari. Jika hanya mesin A dan B yang berjalan, didapat 150 unit. Jika hanya A dan C yang berjalan, didapat 130 unit.", vars: {x: 80, y: 70, z: 50}, finalQ: "Berapa unit output yang dihasilkan mesin B saja per harinya?", ans: 70, sol: "x=80, y=70, z=50. Kapasitas produksi Mesin B = 70 unit." },
+            { id: 6, title: "Sisi Segitiga", q: "Keliling suatu segitiga ABC adalah 70cm. Panjang sisi AC (z) adalah 2cm lebih panjang dari sisi AB (x). Panjang sisi BC (y) adalah 6cm lebih pendek dari sisi AC.", vars: {x: 22, y: 18, z: 24}, finalQ: "Berapakah nilai selisih panjang antara sisi terpanjang dan terpendek?", ans: 6, sol: "Sisi terpanjang z=24, sisi terpendek y=18. Selisih = 24 - 18 = 6cm." },
+            { id: 7, title: "Hasil Panen Kebun", q: "Total panen 3 petani adalah 225kg. Hasil Pak Yadi (z) 15kg lebih sedikit dari Pak Ahmad (x). Sedangkan hasil Pak Yadi 15kg lebih banyak dari Pak Badrun (y).", vars: {x: 90, y: 60, z: 75}, finalQ: "Berapakah total berat hasil panen murni milik Pak Ahmad?", ans: 90, sol: "Ahmad(x)=90kg, Badrun(y)=60kg, Yadi(z)=75kg. Hasil Pak Ahmad = 90kg." },
+            { id: 8, title: "Donasi Sosial", q: "Tiga kelompok menyumbang total Rp50.000. Kelompok 1 (x) menyumbang dua kali lipat Kelompok 2 (y). Kelompok 3 (z) menyumbang Rp10.000 lebih banyak dari Kelompok 2.", vars: {x: 20000, y: 10000, z: 20000}, finalQ: "Berapakah jumlah besaran donasi uang dari Kelompok 3?", ans: 20000, sol: "x=20000, y=10000, z=20000. Sumbangan Kelompok 3 = Rp20.000." },
+            { id: 9, title: "Tiket Wahana", q: "Total 500 penonton bioskop. Tiket dewasa (x)=Rp33.000, remaja (y)=Rp24.000, anak (z)=Rp9.000. Total pendapatan Rp11.100.000. Jumlah Dewasa = Remaja + Anak.", vars: {x: 250, y: 150, z: 100}, finalQ: "Berapakah kuantitas jumlah pengunjung kategori Remaja?", ans: 150, sol: "Dewasa(x)=250, Remaja(y)=150, Anak(z)=100. Penonton Remaja = 150 orang." },
+            { id: 10, title: "Campuran Pupuk", q: "Petani butuh 47kg pupuk campuran zat Nitrogen (x), Fosfor (y), Kalium (z). Kalium butuh 3kg lebih banyak dari Nitrogen. Fosfor butuh 2kg kurang dari Nitrogen.", vars: {x: 15, y: 13, z: 18}, finalQ: "Berapakah kebutuhan berat zat Nitrogen yang dicari?", ans: 15, sol: "Nitrogen(x)=15kg, Fosfor(y)=13kg, Kalium(z)=18kg. Kebutuhan Nitrogen = 15kg." },
+            
+            // 5 SOAL BARU (HOTS - TINGKAT KESULITAN TINGGI)
+            { id: 11, title: "SPLTV Pecahan / Kerja Sama", q: "Jika Pekerja A (x), B (y), dan C (z) bekerja bersama, sebuah proyek selesai dalam 4 hari (1/x + 1/y + 1/z = 1/4). Jika hanya A dan B, selesai 6 hari. Jika B dan C, selesai 8 hari.", vars: {x: 12, y: 12, z: 24}, finalQ: "Berapa hari yang dibutuhkan jika Pekerja C bekerja sendirian menyelesaikan proyek?", ans: 24, sol: "Misalkan variabel pecahan. Didapatkan 1/x = 1/12, 1/y = 1/12, 1/z = 1/24. Maka C sendiri butuh 24 hari." },
+            { id: 12, title: "Perbandingan Umur Ganda", q: "Dua tahun lalu, umur Adi (x) adalah 2 kali umur Budi (y). Tiga tahun yang akan datang, jumlah umur Budi dan Cici (z) adalah 31 tahun. Saat ini, selisih umur Adi dan Cici adalah 5 tahun (Adi lebih tua).", vars: {x: 16, y: 9, z: 11}, finalQ: "Berapakah jumlah umur Adi, Budi, dan Cici saat ini?", ans: 36, sol: "Model: x-2=2(y-2), y+3+z+3=31, x-z=5. Diperoleh x=16, y=9, z=11. Total = 36 tahun." },
+            { id: 13, title: "Arus Air & Kecepatan per Jam", q: "Sebuah kapal melaju di sungai. Kecepatan searah arus (x+z) adalah 25 km/jam. Kecepatan melawan arus (x-z) adalah 15 km/jam. Di laut tenang, kecepatan kapal (x) adalah 4 kali kecepatan kapal B (y).", vars: {x: 20, y: 5, z: 5}, finalQ: "Berapakah jumlah kecepatan kapal B (y) ditambah kecepatan arus sungai (z)?", ans: 10, sol: "Dari x+z=25 dan x-z=15 didapat x=20, z=5. Karena x=4y, maka y=5. Hasil y+z = 5+5 = 10." },
+            { id: 14, title: "Investasi Tiga Rekening", q: "Total investasi Rp100 juta di tiga bank dengan bunga berbeda: Rekening A (x) bunga 5%, B (y) bunga 6%, C (z) bunga 8% per tahun. Total bunga setahun Rp6,6 juta. Modal di Rekening C sama dengan dua kali modal di Rekening A.", vars: {x: 20, y: 40, z: 40}, finalQ: "Berapa juta rupiah modal yang diinvestasikan pada Rekening B?", ans: 40, sol: "Sistem persamaan: x+y+z=100, 0.05x+0.06y+0.08z=6.6, z=2x. Diperoleh x=20, y=40, z=40." },
+            { id: 15, title: "Harga Grosir Non-Linear", q: "Pak Hari membeli kombinasi paket kain: Paket 1 (2x + y + z) seharga Rp160.000. Paket 2 (x + 2y + z) seharga Rp170.000. Jika ia menukar 1 kain z dengan 1 kain x pada Paket 1, harganya naik Rp10.000 menjadi Rp170.000.", vars: {x: 40000, y: 50000, z: 30000}, finalQ: "Berapakah harga untuk 1 helai kain x ditambah 2 helai kain z?", ans: 100000, sol: "Persamaan 3: 3x+y = 170.000. Melalui eliminasi ditemukan x=40.000, y=50.000, z=30.000. Nilai x+2z = 40.000 + 60.000 = Rp100.000." }
+        ];
+
+        let currentSlideIdx = 1;
+        const totalSlides = 21; // 1-3 intro, 4-18 soal (15 soal), 19-21 outro
+        let recordedTimes = new Array(15).fill(0);
+        let activeIntervals = new Array(15).fill(null);
+        let startTimestamps = new Array(15).fill(0);
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSfx(freq, type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = type; osc.frequency.value = freq;
+            osc.start(); gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+            osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        function generateSlides() {
+            const container = document.getElementById('dynamic-content');
+            problems.forEach((p, i) => {
+                const slideNum = i + 4;
+                const s = document.createElement('div');
+                s.className = 'slide';
+                s.id = `slide-${slideNum}`;
+                s.innerHTML = `
+                    <h2 class="slide-title">Tantangan Soal Cerita #${p.id}: ${p.title}</h2>
+                    <div class="grid-2">
+                        <div class="text-side">
+                            <div class="timer-badge">
+                                <i class="fa-solid fa-stopwatch" style="color: var(--lime);"></i>
+                                <span class="timer-clock" id="clock-${i}">0.0s</span>
+                                <button class="btn-check" style="background:#334155; color:#fff;" onclick="startT(${i})">START</button>
+                            </div>
+                            <p style="color: #fff; font-weight: 500; font-size:15px;">${p.q}</p>
+                            <div class="card" style="margin-top: auto; padding: 10px;">
+                                <p style="font-size: 12px;"><i class="fa-solid fa-tags"></i> Variabel Representasi: x (Komponen 1), y (Komponen 2), z (Komponen 3)</p>
+                            </div>
+                        </div>
+                        <div class="card" style="display: flex; flex-direction: column; gap: 6px; justify-content: center;">
+                            <h4 style="font-size: 13px; color: var(--lime); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom:3px;">1. Validasi Nilai Variabel</h4>
+                            <div class="input-row"><label>Nilai x :</label><input type="number" class="input-field" id="v-${i}-x" placeholder="..."><button class="btn-check" onclick="checkV(${i},'x',${p.vars.x})">Cek</button></div>
+                            <div class="input-row"><label>Nilai y :</label><input type="number" class="input-field" id="v-${i}-y" placeholder="..."><button class="btn-check" onclick="checkV(${i},'y',${p.vars.y})">Cek</button></div>
+                            <div class="input-row"><label>Nilai z :</label><input type="number" class="input-field" id="v-${i}-z" placeholder="..."><button class="btn-check" onclick="checkV(${i},'z',${p.vars.z})">Cek</button></div>
+                            
+                            <h4 style="font-size: 13px; color: var(--lime); margin-top: 3px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom:3px;">2. Hasil Pertanyaan Akhir</h4>
+                            <p style="font-size: 12px; color: #fff; margin-bottom:2px;">${p.finalQ}</p>
+                            <div class="input-row">
+                                <input type="number" class="input-field" style="flex-grow:1;" id="v-${i}-ans" placeholder="Isi jawaban...">
+                                <button class="btn-check" style="background: var(--text-main);" onclick="checkAns(${i},${p.ans})">JAWAB</button>
+                            </div>
+                            <div id="msg-${i}" style="font-size:12px; font-weight:700;"></div>
+                            <button class="btn-check" style="background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); margin-top: 3px; padding: 3px;" onclick="toggleSol(${i})">Buka Pembahasan</button>
+                            <div id="sol-${i}" class="solution-box">${p.sol}</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(s);
+            });
+            initDots();
+        }
+
+        function initDots() {
+            const container = document.getElementById('dots-container');
+            for(let i=1; i<=totalSlides; i++) {
+                const d = document.createElement('div');
+                d.className = `dot ${i===1?'active':''}`;
+                container.appendChild(d);
+            }
+        }
+
+        function moveSlide(dir) {
+            document.getElementById(`slide-${currentSlideIdx}`).classList.remove('active');
+            currentSlideIdx += dir;
+            document.getElementById(`slide-${currentSlideIdx}`).classList.add('active');
+            document.getElementById('btn-prev').disabled = currentSlideIdx === 1;
+            document.getElementById('btn-next').disabled = currentSlideIdx === totalSlides;
+            
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((d, i) => d.className = `dot ${i+1 === currentSlideIdx ? 'active' : ''}`);
+
+            if (currentSlideIdx === 19) updateStats();
+        }
+
+        function startT(i) {
+            if (activeIntervals[i]) return;
+            startTimestamps[i] = performance.now() - (recordedTimes[i] * 1000);
+            activeIntervals[i] = setInterval(() => {
+                recordedTimes[i] = (performance.now() - startTimestamps[i]) / 1000;
+                document.getElementById(`clock-${i}`).innerText = recordedTimes[i].toFixed(1) + "s";
+            }, 100);
+        }
+
+        function stopT(i) {
+            clearInterval(activeIntervals[i]);
+            activeIntervals[i] = null;
+        }
+
+        function checkV(i, v, val) {
+            const el = document.getElementById(`v-${i}-${v}`);
+            if (parseInt(el.value) === val) {
+                el.className = "input-field is-correct";
+                playSfx(880, 'sine');
+            } else {
+                el.className = "input-field is-wrong";
+                playSfx(220, 'square');
+            }
+        }
+
+        function checkAns(i, val) {
+            const el = document.getElementById(`v-${i}-ans`);
+            const msg = document.getElementById(`msg-${i}`);
+            if (parseInt(el.value) === val) {
+                el.className = "input-field is-correct";
+                stopT(i);
+                playSfx(1100, 'sine');
+                msg.innerHTML = `<span style="color:var(--lime);"><i class="fa-solid fa-circle-check"></i> Selesai dalam ${recordedTimes[i].toFixed(1)} detik.</span>`;
+            } else {
+                el.className = "input-field is-wrong";
+                playSfx(150, 'square');
+                msg.innerHTML = `<span style="color:var(--wrong);"><i class="fa-solid fa-circle-xmark"></i> Hitungan salah, coba lagi!</span>`;
+            }
+        }
+
+        function toggleSol(i) {
+            const el = document.getElementById(`sol-${i}`);
+            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function updateStats() {
+            const body = document.getElementById('stat-body');
+            body.innerHTML = '';
+            let total = 0, count = 0;
+            recordedTimes.forEach((t, i) => {
+                if (t > 0) { total += t; count++; }
+                body.innerHTML += `<tr><td>Tantangan #${i+1}</td><td>${t > 0 ? t.toFixed(1) + ' detik' : '-'}</td><td>${t > 0 ? '<span style="color:var(--lime); font-weight:bold;">SELESAI ✓</span>' : 'BELUM'}</td></tr>`;
+            });
+            document.getElementById('avg-display').innerText = count > 0 ? (total/count).toFixed(1) + "s" : "--s";
+        }
+
+        generateSlides();
+    </script>
+</body>
+</html>
